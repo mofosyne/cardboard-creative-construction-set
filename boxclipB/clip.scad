@@ -1,5 +1,4 @@
-
-// https://www.thingiverse.com/thing:39983/files Flexible Belt Clip By Austin January 02, 2013
+// Brian Khuu 2024 (All Rights Reserved)
 
 clip_height = 20;
 clip_width = 70/2;
