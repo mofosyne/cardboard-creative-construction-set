@@ -35,7 +35,9 @@ module torxModel(bitsize_selector, h_override = 0)
         }
     }
 
-    if (bitsize_selector == "T30") {
+    if (bitsize_selector == "T20") {
+        torx_profile(a=3.893, b=2.778, ri=0.871-0.015, re=0.307, hullD=2.4, h=4.07, h_override=h_override);
+    } else if (bitsize_selector == "T30") {
         torx_profile(a=5.557, b=3.972, ri=1.206-0.015, re=0.454, hullD=2.4, h=4.95, h_override=h_override);
     } else if (bitsize_selector == "T100") {
         torx_profile(a=22.245, b=15.834, ri=4.913, re=1.724, hullD=9.5, h=11.35, h_override=h_override);
