@@ -3,6 +3,9 @@
 // This work is released with CC0 into the public domain.
 // https://creativecommons.org/publicdomain/zero/1.0/
 
+// rounded screw point (safer for kids)
+rounded_screw_point = true;
+
 // Makedo Screws tends to be use for 10mm diameter holes 
 thread_diam = 14;
 roddiam = 5;
@@ -12,9 +15,16 @@ thread_pitch = 4;
 cap_diam = 17;
 screw_height = straightlen + angledlen;
 
+// Phillips Screw Head
+enable_phillips = true;
 phillips_width = 7;
 phillips_thick = 1.5;
 phillips_straightdepth = 2.5;
+slottedOnly = false;
+
+// Most typical torx seems to be T20 https://www.electriciantalk.com/threads/most-common-torx-sizes.32688/
+enable_torx = true;
+torxTip = "T20";
 
 quantity=1;
 
@@ -248,6 +258,7 @@ module PhillipsTip(width=7, thickness=0, straightdepth=0, position=[0,0,0], rota
           translate([-thickness/2, -thickness/2, height-extra_height])
             cube([thickness, thickness, extra_height]);
         }
+        if (!slottedOnly)
         hull() {
           translate([-thickness/2, -width/2, -extra_height/2])
             cube([thickness, width, straightdepth+extra_height]);
@@ -398,19 +409,54 @@ module torxTip(bitsize_selector, h = 0)
 }
 ////// end copied from torx.scad ////
 
-module CardboardScrew(knob_height = 6) {
-  torxTip("T20",5.3) //< Most typical torx seems to be T20 https://www.electriciantalk.com/threads/most-common-torx-sizes.32688/
-  PhillipsTip(phillips_width, phillips_thick, phillips_straightdepth)
-    {
-      translate([0,0,knob_height])
-        AugerThread(thread_diam, roddiam, screw_height, thread_pitch, tooth_angle=15, tip_height=angledlen);
-      knurled_knob(d=cap_diam, h=knob_height);
+module BareCardboardScrew(knob_height, rounded_screw_point) {
+  translate([0,0,knob_height])
+    AugerThread(thread_diam, roddiam, screw_height, thread_pitch, tooth_angle=15, tip_height=angledlen);
+        knurled_knob(d=cap_diam, h=knob_height);
 
+  if (rounded_screw_point)
+  {      
+      // Add rounded bit so it is safer for kids
+      translate([0,0,knob_height])
+        cylinder(h = straightlen+angledlen-1, r = roddiam/2, $fn=40);
+      translate([0,0,knob_height+straightlen+angledlen-1])
+        sphere(r = roddiam/2, $fn=40);
+  }
+  else
+  {
       // Add poky bit so it can punch though without tools
       translate([0,0,knob_height])
         cylinder(h = straightlen+angledlen-1, r = roddiam/2, $fn=40);
       translate([0,0,knob_height+straightlen+angledlen-1])
         cylinder(h = 6, r1 = roddiam/2, r2 = 0, $fn=40);
+  }
+}
+
+
+
+module CardboardScrew(knob_height, rounded_screw_point) {
+
+    if (enable_phillips && enable_torx)
+    {
+      torxTip("T20",5.3) 
+        PhillipsTip(phillips_width, phillips_thick, phillips_straightdepth)
+          BareCardboardScrew(knob_height = knob_height, rounded_screw_point = rounded_screw_point);
+    }
+    else if (enable_phillips && enable_torx)
+    {
+      torxTip("T20",5.3) 
+        PhillipsTip(phillips_width, phillips_thick, phillips_straightdepth)
+          BareCardboardScrew(knob_height = knob_height, rounded_screw_point = rounded_screw_point);
+    }
+    else if (enable_phillips && enable_torx)
+    {
+      torxTip("T20",5.3) 
+        PhillipsTip(phillips_width, phillips_thick, phillips_straightdepth)
+          BareCardboardScrew(knob_height = knob_height, rounded_screw_point = rounded_screw_point);
+    }
+    else
+    {
+        BareCardboardScrew(knob_height = knob_height, rounded_screw_point = rounded_screw_point);
     }
 }
 
@@ -436,4 +482,4 @@ module MakeSet(quantity=1, x_len=30, y_len=30) {
 }
 
 MakeSet(quantity, cap_diam, cap_diam)
-  CardboardScrew();
+  CardboardScrew(knob_height = 6, rounded_screw_point = rounded_screw_point);
