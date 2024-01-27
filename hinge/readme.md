@@ -1,0 +1,1 @@
+cardboard hinge hole spacing is 3cm between hinges and within hinges
