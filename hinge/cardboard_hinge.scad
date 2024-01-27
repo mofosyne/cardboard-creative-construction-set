@@ -52,7 +52,7 @@ holeOffsetY = 5;
 // Space between the hinge pieces
 hingeGap = 0.5; // [0.1:0.1:2.5]
 // Cut the hinge open for display purposes; 1 means not cut open
-cutOpen = 0.9; // [0.4:0.05:1]
+cutOpen = 1.0; // [0.4:0.05:1]
 
 /* [Advanced parameters] */
 // 0 means hinge interfaces will come to points, increase it to blunt the ends
