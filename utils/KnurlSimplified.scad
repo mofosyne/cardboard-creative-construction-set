@@ -1,4 +1,17 @@
+/*
+MODULE: Knurl Simplified (Remixed from a design by franpoli by mofosyne)
 
+Modified knurled_button.scad from https://github.com/franpoli/OpenSCADutil/blob/master/knurled_knob/knurled_knob.scad by franpoli
+to just get the Knurl shape, so it can be reused in other context like a Knurl screw for cardboard.
+
+This Module licence is:
+ GNU General Public License v3.0
+ Permissions of this strong copyleft license are conditioned on making available complete source
+ code of licensed works and modifications, which include larger works using a licensed work, under
+ the same license. Copyright and license notices must be preserved. Contributors provide an express
+ grant of patent rights.
+*/
+  
 module knurled_knob(h = 10,
                     d = 15,
                     knurling_step = 2.5,
