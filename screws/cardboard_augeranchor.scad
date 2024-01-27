@@ -17,7 +17,7 @@ screw_height = straightlen + angledlen;
 
 // Phillips Screw Head
 enable_phillips = true;
-phillips_width = 7;
+phillips_width = 6.5;
 phillips_thick = 1.5;
 phillips_straightdepth = 2.5;
 slottedOnly = false;
@@ -409,6 +409,32 @@ module torxTip(bitsize_selector, h = 0)
 }
 ////// end copied from torx.scad ////
 
+////// start copied from makeDoTipProfile.scad ////
+// Makedo Style Hex Head
+// By Brian Khuu 2024
+// Licence: GNU v3 or higher
+module makedoStyleScrewHeadModel(h, tol = 0)
+{
+    difference()
+    {
+        cylinder(r1=13/2+tol, r2=13/2-tol, h = h, $fn=60);
+        translate([0,0,-0.01])
+            cylinder(r1=5-tol, r2=5+tol, h = h+0.02, $fn=6);
+    }
+}
+
+module makedoStyleScrewHead(h, tol=0)
+{
+    difference()
+    {
+        children();
+        translate([0,0,-0.01])
+            makedoStyleScrewHeadModel(h=h, tol=tol);
+    }
+}
+////// end copied from makeDoTipProfile.scad ////
+
+
 module BareCardboardScrew(knob_height, rounded_screw_point) {
   translate([0,0,knob_height])
     AugerThread(thread_diam, roddiam, screw_height, thread_pitch, tooth_angle=15, tip_height=angledlen);
@@ -438,19 +464,20 @@ module CardboardScrew(knob_height, rounded_screw_point) {
 
     if (enable_phillips && enable_torx)
     {
-      torxTip("T20",5.3) 
+      makedoStyleScrewHead(h=3, tol=0.2)
+      torxTip(torxTip,5.3) 
         PhillipsTip(phillips_width, phillips_thick, phillips_straightdepth)
           BareCardboardScrew(knob_height = knob_height, rounded_screw_point = rounded_screw_point);
     }
     else if (enable_phillips && enable_torx)
     {
-      torxTip("T20",5.3) 
+      torxTip(torxTip,5.3) 
         PhillipsTip(phillips_width, phillips_thick, phillips_straightdepth)
           BareCardboardScrew(knob_height = knob_height, rounded_screw_point = rounded_screw_point);
     }
     else if (enable_phillips && enable_torx)
     {
-      torxTip("T20",5.3) 
+      torxTip(torxTip,5.3) 
         PhillipsTip(phillips_width, phillips_thick, phillips_straightdepth)
           BareCardboardScrew(knob_height = knob_height, rounded_screw_point = rounded_screw_point);
     }
